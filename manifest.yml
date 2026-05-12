@@ -1,0 +1,61 @@
+modules:
+  jira:jqlFunction:
+    - key: sprint-start-date-function
+      name: sprintStartDate
+      arguments:
+        - name: boardName
+          required: true
+      types:
+        - date
+      operators:
+        - ">="
+        - "<="
+        - ">"
+        - "<"
+        - "="
+      function: jql-start-handler
+
+    - key: sprint-end-date-function
+      name: sprintEndDate
+      arguments:
+        - name: boardName
+          required: true
+      types:
+        - date
+      operators:
+        - ">="
+        - "<="
+        - ">"
+        - "<"
+        - "="
+      function: jql-end-handler
+
+  trigger:
+    - key: sprint-started-trigger
+      function: sprint-trigger-handler
+      events:
+        - avi:jira-software:updated:sprint
+
+function:
+  - key: jql-start-handler
+    handler: index.sprintStartDate
+  - key: jql-end-handler
+    handler: index.sprintEndDate
+  - key: sprint-trigger-handler
+    handler: index.onSprintUpdated
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/2a2037d5-40a0-4e8e-8888-46fdd63c2568
+  compatibility:
+    jira:
+      required: true
+
+permissions:
+  scopes:
+    - read:jira-work
+    - read:board-scope:jira-software
+    - read:sprint:jira-software
+    - write:app-data:jira
