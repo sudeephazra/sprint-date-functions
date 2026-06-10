@@ -28,6 +28,8 @@ forge deploy
 forge install
 ```
 
+- If an updated version of your app is available, run `forge deploy` to update your app and then run `forge install --upgrade` again to update the app on your site.
+
 - Develop your app by running `forge tunnel` to proxy invocations locally:
 ```
 forge tunnel
